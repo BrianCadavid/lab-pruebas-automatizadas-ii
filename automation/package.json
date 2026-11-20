@@ -1,0 +1,14 @@
+{
+  "name": "stockpascual-automation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pruebas E2E Playwright — StockPascual (lab)",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1"
+  }
+}

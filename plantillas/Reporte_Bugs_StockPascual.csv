@@ -1,0 +1,2 @@
+Bug_ID,Titulo,Severidad,Prioridad,Modulo,Pasos_reproduccion,Resultado_esperado,Resultado_actual,Datos_usados,Evidencia,Sugerido_por_IA,Confirmado_en_app,Notas
+BUG-EX-01,Ejemplo: salida deja stock negativo,Critica,P0,Movimientos,"1. Login admin 2. Abrir producto con stock 3 3. Registrar OUT de 10",El sistema debe rechazar la salida o impedir stock < 0,El stock queda en -7,SKU=MON-24-04 qty=10,evidencias/paso5_bugs/bug01_stock_negativo.png,Parcial,Si,Impacta entregas a laboratorios y auditoría

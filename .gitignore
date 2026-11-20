@@ -1,0 +1,32 @@
+# Dependencias / runtime
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Playwright
+automation/test-results/
+automation/playwright-report/
+automation/blob-report/
+automation/playwright/.cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# Secretos locales (por si alguien crea configs)
+.env
+.env.*
+!.env.example
+
+# Temporales
+*.tmp
+*.temp
+*.log
+
+# Material interno del profesor (no publicar / no versionar en el repo de estudiantes)
+others/

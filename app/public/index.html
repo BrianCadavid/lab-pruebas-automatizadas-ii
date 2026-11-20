@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StockPascual — Gestión de Inventarios</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Roboto+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="login-view" class="login-view">
+    <div class="login-panel">
+      <div class="brand-block">
+        <div class="logo-mark" aria-hidden="true">SP</div>
+        <div>
+          <p class="eyebrow">Institución Universitaria Pascual Bravo</p>
+          <h1>StockPascual</h1>
+          <p class="tagline">Control de inventarios para almacén y laboratorios</p>
+        </div>
+      </div>
+      <form id="login-form" class="login-form" autocomplete="on">
+        <label>
+          Usuario
+          <input id="username" name="username" type="text" required placeholder="admin" />
+        </label>
+        <label>
+          Contraseña
+          <input id="password" name="password" type="password" required placeholder="••••••••" />
+        </label>
+        <p id="login-error" class="error" hidden></p>
+        <button type="submit" class="btn primary">Ingresar</button>
+        <p class="hint">Demo lab: <code>admin / Admin123!</code> · <code>operador / Oper123!</code></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="app-view" class="app-view" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="logo-mark sm">SP</span>
+        <div>
+          <strong>StockPascual</strong>
+          <small id="user-chip">—</small>
+        </div>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+        <button class="nav-btn" data-view="products">Productos</button>
+        <button class="nav-btn" data-view="movements">Movimientos</button>
+        <button class="nav-btn" data-view="alerts">Alertas stock</button>
+      </nav>
+      <button id="logout-btn" class="btn ghost logout">Cerrar sesión</button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h2 id="view-title">Dashboard</h2>
+          <p id="view-subtitle">Resumen operativo del inventario</p>
+        </div>
+        <div class="top-actions">
+          <a id="export-csv" class="btn secondary" href="/api/export/csv">Exportar CSV</a>
+          <button id="btn-new-product" class="btn primary" data-admin-only hidden>+ Producto</button>
+          <button id="btn-new-movement" class="btn secondary">+ Movimiento</button>
+        </div>
+      </header>
+
+      <section id="view-dashboard" class="view">
+        <div class="metrics" id="metrics"></div>
+        <div class="panel">
+          <h3>Productos con stock bajo</h3>
+          <div id="dashboard-low" class="table-wrap"></div>
+        </div>
+      </section>
+
+      <section id="view-products" class="view" hidden>
+        <div class="toolbar">
+          <input id="search-q" type="search" placeholder="Buscar por nombre o SKU..." />
+          <select id="filter-category">
+            <option value="">Todas las categorías</option>
+          </select>
+          <label class="check">
+            <input id="filter-low" type="checkbox" />
+            Solo stock bajo
+          </label>
+          <button id="btn-search" class="btn secondary">Buscar</button>
+        </div>
+        <div id="products-table" class="table-wrap"></div>
+      </section>
+
+      <section id="view-movements" class="view" hidden>
+        <div id="movements-table" class="table-wrap"></div>
+      </section>
+
+      <section id="view-alerts" class="view" hidden>
+        <div class="panel">
+          <h3>Alertas de reposición</h3>
+          <p class="muted">Productos con stock menor o igual al mínimo configurado.</p>
+          <div id="alerts-table" class="table-wrap"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal producto -->
+  <dialog id="product-dialog">
+    <form method="dialog" id="product-form" class="dialog-form">
+      <h3 id="product-dialog-title">Nuevo producto</h3>
+      <input type="hidden" id="product-id" />
+      <div class="grid-2">
+        <label>SKU <input id="p-sku" /></label>
+        <label>Nombre <input id="p-name" required /></label>
+        <label>Categoría <input id="p-category" list="category-list" /></label>
+        <label>Precio (COP) <input id="p-price" type="number" step="1" /></label>
+        <label>Stock inicial <input id="p-stock" type="number" step="1" value="0" /></label>
+        <label>Stock mínimo <input id="p-min" type="number" step="1" value="0" /></label>
+        <label>Unidad <input id="p-unit" value="und" /></label>
+        <label>Ubicación <input id="p-location" /></label>
+      </div>
+      <datalist id="category-list">
+        <option value="Accesorios"></option>
+        <option value="Periféricos"></option>
+        <option value="Pantallas"></option>
+        <option value="Audio"></option>
+        <option value="General"></option>
+      </datalist>
+      <p id="product-error" class="error" hidden></p>
+      <div class="dialog-actions">
+        <button value="cancel" class="btn ghost">Cancelar</button>
+        <button id="product-save" value="default" class="btn primary">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Modal movimiento -->
+  <dialog id="movement-dialog">
+    <form method="dialog" id="movement-form" class="dialog-form">
+      <h3>Registrar movimiento</h3>
+      <label>Producto
+        <select id="m-product" required></select>
+      </label>
+      <div class="grid-2">
+        <label>Tipo
+          <select id="m-type">
+            <option value="IN">Entrada (IN)</option>
+            <option value="OUT">Salida (OUT)</option>
+            <option value="ADJUST">Ajuste (ADJUST)</option>
+          </select>
+        </label>
+        <label>Cantidad <input id="m-qty" type="number" min="1" step="1" required value="1" /></label>
+      </div>
+      <label>Motivo <input id="m-reason" placeholder="Compra, entrega a laboratorio, merma, conteo físico..." /></label>
+      <p id="movement-error" class="error" hidden></p>
+      <div class="dialog-actions">
+        <button value="cancel" class="btn ghost">Cancelar</button>
+        <button value="default" class="btn primary">Registrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="/app.js"></script>
+</body>
+</html>
