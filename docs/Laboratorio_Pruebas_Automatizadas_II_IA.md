@@ -15,7 +15,7 @@
 
 | # | Nombre completo |
 |---|-----------------|
-| 1 | |
+| 1 | | Brian Alexis Cadavid Castano
 | 2 | |
 | 3 | |
 
