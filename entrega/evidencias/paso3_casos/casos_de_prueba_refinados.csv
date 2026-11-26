@@ -1,0 +1,28 @@
+ID;Módulo;Título;Precondiciones;Pasos;Datos;Resultado esperado;Prioridad;Automatizable
+TC-F01;Login;Login administrador válido;Aplicación disponible;Ingresar credenciales de administrador;admin / Admin123!;Acceso autorizado como administrador;P0;Sí
+TC-F02;Login;Login operador válido;Aplicación disponible;Ingresar credenciales de operador;operador / Oper123!;Acceso autorizado como operador;P0;Sí
+TC-F03;Productos;Consultar catálogo;Sesión iniciada;Abrir módulo Productos;N/A;Catálogo visible;P1;Sí
+TC-F04;Productos;Buscar por nombre;Productos existentes;Buscar por nombre de producto;Mouse inalámbrico;Se muestran coincidencias;P1;Sí
+TC-F05;Productos;Buscar por SKU;Productos existentes;Buscar por SKU;MOU-WL-02;Se muestra producto correspondiente;P1;Sí
+TC-F06;Productos;Filtrar por categoría;Productos de varias categorías;Seleccionar categoría y buscar;Periféricos;Solo se muestran productos de la categoría seleccionada;P1;Sí
+TC-F07;Productos;Filtrar stock bajo;Productos con stock bajo;Activar filtro Solo stock bajo;N/A;Se muestran productos con stock bajo;P1;Sí
+TC-F08;Productos;Crear producto;Administrador autenticado;Crear producto con datos válidos;SKU único y campos válidos;Producto creado y visible en catálogo;P0;Sí
+TC-F09;Productos;Editar producto;Producto existente y administrador;Modificar datos y guardar;Cambiar nombre o precio;Cambios persistidos;P1;Sí
+TC-F10;Productos;Eliminar producto;Producto elegible y administrador;Eliminar producto de prueba;Producto de prueba;Producto eliminado según comportamiento definido;P1;Sí
+TC-F11;Movimientos;Registrar IN;Producto existente y usuario autorizado;Registrar entrada;Cantidad positiva;Stock aumenta correctamente;P0;Sí
+TC-F12;Movimientos;Registrar OUT;Producto con stock suficiente;Registrar salida;Cantidad válida;Stock disminuye correctamente;P0;Sí
+TC-F13;Movimientos;Registrar ADJUST;Producto existente;Registrar ajuste;Conteo físico;Stock queda en la cantidad ajustada;P0;Sí
+TC-F14;Alertas;Consultar alertas;Productos que cumplen condición de stock bajo;Abrir Alertas stock;N/A;Productos que cumplen condición aparecen;P1;Sí
+TC-F15;Exportación;Exportar CSV;Productos existentes;Exportar archivo CSV;N/A;CSV descargado con campos requeridos;P1;Sí
+TC-N01;Login;Credenciales incorrectas;Aplicación disponible;Intentar iniciar sesión con contraseña incorrecta;Usuario válido y contraseña incorrecta;No permite acceso;P0;Sí
+TC-N02;Productos;SKU duplicado;SKU ya existente;Intentar crear producto con SKU existente;SKU duplicado;Rechaza duplicado y no crea registro;P0;Sí
+TC-N03;Movimientos;OUT mayor al stock;Stock conocido;Registrar salida superior al stock;Cantidad mayor al stock disponible;Rechaza operación y no deja stock negativo;P0;Sí
+TC-N04;Productos;Campos inválidos o incompletos;Administrador autenticado;Intentar crear producto con datos inválidos;Campos requeridos incompletos;No crea producto inválido;P1;Sí
+TC-N05;Movimientos;Cantidad inválida;Usuario autorizado;Registrar movimiento con cantidad inválida;Cantidad 0 o negativa;Rechaza movimiento inválido;P1;Sí
+TC-S01;Roles;Operador no puede crear productos;Sesión operador;Intentar acceder a creación de producto;Operador;Operación no autorizada;P0;Sí
+TC-S02;Roles;Operador no puede editar o eliminar productos;Sesión operador;Intentar editar o eliminar producto;Operador;Operaciones no autorizadas;P0;Sí
+TC-S03;Seguridad;Entradas de texto no ejecutan scripts;Campo de texto disponible;Introducir texto de prueba controlado;Texto de prueba con caracteres de script;Entrada no ejecutada como código;P0;Sí
+TC-I01;Integridad;Movimiento actualiza stock y Dashboard;Producto con stock conocido;Registrar movimiento y revisar stock y Dashboard;Stock inicial y cantidad de movimiento;Stock e indicadores reflejan cambio correctamente;P0;Sí
+TC-I02;Integridad;ADJUST se refleja en catálogo y Dashboard;Producto existente;Ajustar stock y consultar catálogo y Dashboard;Conteo físico nuevo;Ambas vistas reflejan cantidad consistente;P0;Sí
+TC-E01;E2E;Entrada de inventario y actualización de alerta;Producto con stock bajo;Registrar IN y consultar catálogo Dashboard y alertas;Entrada suficiente para superar mínimo;Stock actualizado y alerta cambia según regla;P0;Sí
+TC-E02;E2E;Salida de inventario y exportación;Producto con stock suficiente;Registrar OUT consultar stock y exportar CSV;Salida válida;Stock actualizado y CSV contiene información consistente;P0;Sí
